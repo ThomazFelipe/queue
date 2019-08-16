@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -33,6 +34,9 @@ public class Event implements Serializable {
     @Column( name = "CURRENT_PASSWORD" )
     private Long currentPassword;
 
+    @Column( name = "AMOUNT_PASSWORD" )
+    private Long amountPassword;
+
     @Column( name = "CREATED_AT" )
     private Date createdAt;
 
@@ -45,8 +49,11 @@ public class Event implements Serializable {
     @Column( name = "UPDATED_BY", insertable = false, updatable = false )
     private String updatedBy;
 
-//    @OneToMany
-//    private Event event;
+    @ManyToMany( fetch = FetchType.LAZY )
+    @JoinTable( name = "QUEUE_EVENT_USER",
+            joinColumns = @JoinColumn( name = "EVENT_ID", referencedColumnName = "ID" ),
+            inverseJoinColumns = @JoinColumn( name = "USER_ID", referencedColumnName = "ID" ) )
+    private List< User > users;
 
     public Long getId() {
         return id;
@@ -106,6 +113,15 @@ public class Event implements Serializable {
         return currentPassword;
     }
 
+    public Long getAmountPassword() {
+        return amountPassword;
+    }
+
+    public Event setAmountPassword( Long amountPassword ) {
+        this.amountPassword = amountPassword;
+        return this;
+    }
+
     public Event setCurrentPassword( Long currentPassword ) {
         this.currentPassword = currentPassword;
         return this;
@@ -144,6 +160,15 @@ public class Event implements Serializable {
 
     public Event setUpdatedBy( String updatedBy ) {
         this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public List< User > getUsers() {
+        return users;
+    }
+
+    public Event setUsers( List< User > users ) {
+        this.users = users;
         return this;
     }
 

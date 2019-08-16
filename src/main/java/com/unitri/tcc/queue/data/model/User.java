@@ -1,8 +1,10 @@
 package com.unitri.tcc.queue.data.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,14 +19,15 @@ public class User implements Serializable {
     @Column( name = "NAME" )
     private String name;
 
+    @Pattern( regexp = "^[0-9]{10,11}$" )
     @Column( name = "PHONE" )
     private String phone;
 
     @Column( name = "PASSWORD_NUMBER" )
     private Long passwordNumber;
 
-    @Column( name = "CODE" )
-    private String code;
+    @Column( name = "CONFIRMATION_CODE" )
+    private String confirmationCode;
 
     @Column( name = "CREATED_BY" )
     private Date createdAt;
@@ -37,6 +40,9 @@ public class User implements Serializable {
 
     @Column( name = "UPDATED_BY", insertable = false, updatable = false )
     private String updatedBy;
+
+    @ManyToMany( mappedBy = "users", fetch = FetchType.LAZY )
+    private List< Event > events;
 
     public Long getId() {
         return id;
@@ -74,12 +80,12 @@ public class User implements Serializable {
         return this;
     }
 
-    public String getCode() {
-        return code;
+    public String getConfirmationCode() {
+        return confirmationCode;
     }
 
-    public User setCode( String code ) {
-        this.code = code;
+    public User setConfirmationCode( String confirmationCode ) {
+        this.confirmationCode = confirmationCode;
         return this;
     }
 
@@ -119,6 +125,15 @@ public class User implements Serializable {
         return this;
     }
 
+    public List< Event > getEvents() {
+        return events;
+    }
+
+    public User setEvents( List< Event > events ) {
+        this.events = events;
+        return this;
+    }
+
     @Override
     public boolean equals( Object o ) {
         if ( this == o ) return true;
@@ -128,12 +143,12 @@ public class User implements Serializable {
                 Objects.equals( name, user.name ) &&
                 Objects.equals( phone, user.phone ) &&
                 Objects.equals( passwordNumber, user.passwordNumber ) &&
-                Objects.equals( code, user.code );
+                Objects.equals( confirmationCode, user.confirmationCode );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, phone, passwordNumber, code );
+        return Objects.hash( id, name, phone, passwordNumber, confirmationCode );
     }
 
     @Override
@@ -143,7 +158,7 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", passwordNumber=" + passwordNumber +
-                ", code='" + code + '\'' +
+                ", confirmationCode='" + confirmationCode + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", createdBy='" + createdBy + '\'' +
