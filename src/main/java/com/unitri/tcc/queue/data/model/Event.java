@@ -26,6 +26,9 @@ public class Event implements Serializable {
     @Column( name = "DESCRIPTION" )
     private String description;
 
+    @Column( name = "ACTIVE" )
+    private Boolean active;
+
     @Column( name = "INITIAL_DATE" )
     private Date initialDate;
 
@@ -34,6 +37,9 @@ public class Event implements Serializable {
 
     @Column( name = "QR_CODE" )
     private byte[] qrCode;
+
+    @Column( name = "BANNER" )
+    private byte[] banner;
 
     @Column( name = "CURRENT_PASSWORD" )
     private Long currentPassword;
@@ -97,6 +103,15 @@ public class Event implements Serializable {
         return this;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public Event setActive( Boolean active ) {
+        this.active = active;
+        return this;
+    }
+
     public Date getInitialDate() {
         return initialDate;
     }
@@ -121,6 +136,15 @@ public class Event implements Serializable {
 
     public Event setQrCode( byte[] qrCode ) {
         this.qrCode = qrCode;
+        return this;
+    }
+
+    public byte[] getBanner() {
+        return banner;
+    }
+
+    public Event setBanner( byte[] banner ) {
+        this.banner = banner;
         return this;
     }
 
