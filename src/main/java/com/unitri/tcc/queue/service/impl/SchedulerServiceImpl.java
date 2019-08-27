@@ -83,7 +83,7 @@ public class SchedulerServiceImpl implements ScheduleService {
                         0,
                         getRate()
                 ), "SmsSendingThread"
-        );
+        ).start();
 
     }
 
