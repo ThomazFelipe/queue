@@ -3,6 +3,7 @@ package com.unitri.tcc.queue.data.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,6 +35,9 @@ public class Company implements Serializable {
 
     @Column( name = "UPDATED_BY", insertable = false, updatable = false )
     private String updatedBy;
+
+    @OneToMany( mappedBy = "company" )
+    private List< Event > events;
 
     public Long getId() {
         return id;
@@ -104,6 +108,15 @@ public class Company implements Serializable {
 
     public Company setUpdatedBy( String updatedBy ) {
         this.updatedBy = updatedBy;
+        return this;
+    }
+
+    public List< Event > getEvents() {
+        return events;
+    }
+
+    public Company setEvents( List< Event > events ) {
+        this.events = events;
         return this;
     }
 

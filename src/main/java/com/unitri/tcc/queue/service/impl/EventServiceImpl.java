@@ -3,8 +3,10 @@ package com.unitri.tcc.queue.service.impl;
 import com.unitri.tcc.queue.data.model.Event;
 import com.unitri.tcc.queue.data.repository.EventRepository;
 import com.unitri.tcc.queue.service.EventService;
+import com.unitri.tcc.queue.utils.QRCodeUtils;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,6 +17,12 @@ import java.util.Objects;
 public class EventServiceImpl implements EventService {
 
     private final EventRepository repository;
+
+    @Value("${event.qrcode.width}")
+    private Integer qrCodeWidth;
+
+    @Value("${event.qrcode.height}")
+    private Integer qrCodeHeight;
 
     @Autowired
     public EventServiceImpl( EventRepository repository ) {
@@ -43,6 +51,9 @@ public class EventServiceImpl implements EventService {
             event.setCreatedAt( new Date() )
                     .setCreatedBy( "" );
         }
+        repository.saveAndFlush( event );
+        event.setQrCode( QRCodeUtils.generateQRCode( event.getId().toString(), qrCodeWidth, qrCodeHeight ) );
+
         return repository.saveAndFlush( event );
     }
 
