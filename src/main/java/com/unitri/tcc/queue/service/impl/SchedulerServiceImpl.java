@@ -48,7 +48,7 @@ public class SchedulerServiceImpl implements ScheduleService {
                     getQueueInformation( event, smsData.getUserPasswordNumber() ) + smsData.getMessage(),
                     smsData.getNumber());
 
-            if( event.getCurrentPassword().equals( smsData.getUserPasswordNumber() )
+            if( event.getCurrentPassword() >= smsData.getUserPasswordNumber()
                     && Thread.currentThread().getName().equals("SmsSendingThread") ){
                 Thread.currentThread().interrupt();
             }
@@ -72,18 +72,16 @@ public class SchedulerServiceImpl implements ScheduleService {
 
     @Override
     public void schedule(User user, String message) throws NotFoundException {
-        Timer t = new Timer();
+        Timer t = new Timer("SmsSendingThread");
 
         SmsData data = new SmsData(user.getPhone(), message, user.getPasswordNumber());
 
-        new Thread(
-                () -> t.scheduleAtFixedRate(
-                        new TaskManager(BASIC_SMS_FUNCTION, data.setEventId(user.getEvent().getId())
-                                .setUserPasswordNumber(user.getPasswordNumber())),
-                        0,
-                        getRate()
-                ), "SmsSendingThread"
-        ).start();
+        t.scheduleAtFixedRate(
+                new TaskManager(BASIC_SMS_FUNCTION, data.setEventId(user.getEvent().getId())
+                        .setUserPasswordNumber(user.getPasswordNumber())),
+                0,
+                getRate()
+        );
 
     }
 
