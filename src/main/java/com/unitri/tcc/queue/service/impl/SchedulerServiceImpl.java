@@ -36,6 +36,8 @@ public class SchedulerServiceImpl implements ScheduleService {
     @Value("${schedule.time.unity}")
     private String unity;
 
+    private String SMS_THREAD_NAME = "SmsSendingThread";
+
     //--------------------------------just execute in another thread instance-----------------------------------------------
     private Function<Object,Object> BASIC_SMS_FUNCTION = o -> {
         SmsData smsData = (SmsData) o;
@@ -49,7 +51,7 @@ public class SchedulerServiceImpl implements ScheduleService {
                     smsData.getNumber());
 
             if( event.getCurrentPassword() >= smsData.getUserPasswordNumber()
-                    && Thread.currentThread().getName().equals("SmsSendingThread") ){
+                    && Thread.currentThread().getName().equals( SMS_THREAD_NAME ) ){
                 Thread.currentThread().stop();
             }
 
@@ -72,7 +74,7 @@ public class SchedulerServiceImpl implements ScheduleService {
 
     @Override
     public void schedule(User user, String message) throws NotFoundException {
-        Timer t = new Timer("SmsSendingThread");
+        Timer t = new Timer( SMS_THREAD_NAME );
 
         SmsData data = new SmsData(user.getPhone(), message, user.getPasswordNumber());
 
