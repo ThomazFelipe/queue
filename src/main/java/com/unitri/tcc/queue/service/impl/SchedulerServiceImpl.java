@@ -78,16 +78,14 @@ public class SchedulerServiceImpl implements ScheduleService {
 
         List<User> users = userService.findByPhone( data.getNumber() );
 
-        user.getEvents().forEach(event -> {
-            new Thread(
-                    () -> t.scheduleAtFixedRate(
-                            new TaskManager(BASIC_SMS_FUNCTION, data.setEventId(event.getId())
-                                    .setUserPasswordNumber(user.getPasswordNumber())),
-                            0,
-                            getRate()
-                    ), "SmsSendingThread"
-            );
-        });
+        new Thread(
+                () -> t.scheduleAtFixedRate(
+                        new TaskManager(BASIC_SMS_FUNCTION, data.setEventId(user.getEvent().getId())
+                                .setUserPasswordNumber(user.getPasswordNumber())),
+                        0,
+                        getRate()
+                ), "SmsSendingThread"
+        );
 
     }
 
