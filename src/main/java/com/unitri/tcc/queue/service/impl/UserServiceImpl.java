@@ -1,6 +1,5 @@
 package com.unitri.tcc.queue.service.impl;
 
-import com.sun.tools.javac.util.ArrayUtils;
 import com.unitri.tcc.queue.data.model.User;
 import com.unitri.tcc.queue.data.repository.UserRepository;
 import com.unitri.tcc.queue.service.UserService;
