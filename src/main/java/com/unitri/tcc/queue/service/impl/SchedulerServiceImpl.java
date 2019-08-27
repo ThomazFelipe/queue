@@ -50,7 +50,7 @@ public class SchedulerServiceImpl implements ScheduleService {
 
             if( event.getCurrentPassword() >= smsData.getUserPasswordNumber()
                     && Thread.currentThread().getName().equals("SmsSendingThread") ){
-                Thread.currentThread().interrupt();
+                Thread.currentThread().stop();
             }
 
             return true;
