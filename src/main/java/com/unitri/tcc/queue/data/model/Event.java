@@ -64,10 +64,7 @@ public class Event implements Serializable {
     @Column( name = "UPDATED_BY", insertable = false, updatable = false )
     private String updatedBy;
 
-    @ManyToMany( fetch = FetchType.LAZY )
-    @JoinTable( name = "QUEUE_EVENT_USER",
-            joinColumns = @JoinColumn( name = "EVENT_ID", referencedColumnName = "ID" ),
-            inverseJoinColumns = @JoinColumn( name = "USER_ID", referencedColumnName = "ID" ) )
+    @OneToMany( mappedBy = "event", cascade = { CascadeType.MERGE, CascadeType.PERSIST } )
     private List< User > users;
 
     @JsonIgnore

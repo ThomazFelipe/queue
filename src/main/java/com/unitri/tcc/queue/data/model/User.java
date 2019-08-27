@@ -1,5 +1,7 @@
 package com.unitri.tcc.queue.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
@@ -41,8 +43,10 @@ public class User implements Serializable {
     @Column( name = "UPDATED_BY", insertable = false, updatable = false )
     private String updatedBy;
 
-    @ManyToMany( mappedBy = "users", fetch = FetchType.LAZY )
-    private List< Event > events;
+    @JsonIgnore
+    @ManyToOne( fetch = FetchType.LAZY )
+    @JoinColumn( name = "EVENT_ID", referencedColumnName = "ID" )
+    private Event event;
 
     public Long getId() {
         return id;
@@ -125,12 +129,12 @@ public class User implements Serializable {
         return this;
     }
 
-    public List< Event > getEvents() {
-        return events;
+    public Event getEvent() {
+        return event;
     }
 
-    public User setEvents( List< Event > events ) {
-        this.events = events;
+    public User setEvent( Event event ) {
+        this.event = event;
         return this;
     }
 
@@ -138,17 +142,15 @@ public class User implements Serializable {
     public boolean equals( Object o ) {
         if ( this == o ) return true;
         if ( o == null || getClass() != o.getClass() ) return false;
-        User user = ( User ) o;
+        User user = (User) o;
         return Objects.equals( id, user.id ) &&
-                Objects.equals( name, user.name ) &&
                 Objects.equals( phone, user.phone ) &&
-                Objects.equals( passwordNumber, user.passwordNumber ) &&
-                Objects.equals( confirmationCode, user.confirmationCode );
+                Objects.equals( passwordNumber, user.passwordNumber );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, phone, passwordNumber, confirmationCode );
+        return Objects.hash( id, phone, passwordNumber );
     }
 
     @Override
