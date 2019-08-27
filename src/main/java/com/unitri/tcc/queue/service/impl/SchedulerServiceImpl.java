@@ -76,8 +76,6 @@ public class SchedulerServiceImpl implements ScheduleService {
 
         SmsData data = new SmsData(user.getPhone(), message, user.getPasswordNumber());
 
-        List<User> users = userService.findByPhone( data.getNumber() );
-
         new Thread(
                 () -> t.scheduleAtFixedRate(
                         new TaskManager(BASIC_SMS_FUNCTION, data.setEventId(user.getEvent().getId())

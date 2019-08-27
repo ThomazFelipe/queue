@@ -54,15 +54,4 @@ public class UserServiceImpl implements UserService {
         }
         repository.deleteById( id );
     }
-
-    @Override
-    public List<User> findByPhone(String phone) throws NotFoundException {
-        List<User> users = repository.findByPhone( phone );
-
-        if(users.isEmpty()){
-            throw new NotFoundException( "User not found" );
-        }
-
-        return users;
-    }
 }
