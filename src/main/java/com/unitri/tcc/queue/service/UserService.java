@@ -14,4 +14,6 @@ public interface UserService {
     User saveAndFlush( User user );
 
     void delete( Long id ) throws NotFoundException;
+
+    List<User> findByPhone(String phone) throws NotFoundException;
 }

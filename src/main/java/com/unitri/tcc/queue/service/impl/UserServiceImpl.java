@@ -1,5 +1,6 @@
 package com.unitri.tcc.queue.service.impl;
 
+import com.sun.tools.javac.util.ArrayUtils;
 import com.unitri.tcc.queue.data.model.User;
 import com.unitri.tcc.queue.data.repository.UserRepository;
 import com.unitri.tcc.queue.service.UserService;
@@ -52,5 +53,16 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException( "User not found" );
         }
         repository.deleteById( id );
+    }
+
+    @Override
+    public List<User> findByPhone(String phone) throws NotFoundException {
+        List<User> users = repository.findByPhone( phone );
+
+        if(users.isEmpty()){
+            throw new NotFoundException( "User not found" );
+        }
+
+        return users;
     }
 }
