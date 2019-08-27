@@ -35,10 +35,12 @@ public class Event implements Serializable {
     @Column( name = "FINAL_DATE" )
     private Date finalDate;
 
-    @Column( name = "QR_CODE" )
+    @Lob
+    @Column( name = "QR_CODE", columnDefinition = "BLOB")
     private byte[] qrCode;
 
-    @Column( name = "BANNER" )
+    @Lob
+    @Column( name = "BANNER", columnDefinition = "LONGBLOB")
     private byte[] banner;
 
     @Column( name = "CURRENT_PASSWORD" )
