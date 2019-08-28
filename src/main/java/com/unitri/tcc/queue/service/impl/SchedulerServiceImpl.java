@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.function.Function;
 
@@ -71,10 +72,13 @@ public class SchedulerServiceImpl implements ScheduleService {
         }
     }
 
-
     @Override
-    public void schedule(User user, String message) throws NotFoundException {
+    public void schedule(User user, String message) throws Exception {
         Timer t = new Timer( SMS_THREAD_NAME );
+
+        if( Objects.isNull( user.getEvent() ) ){
+            throw new Exception("User is not registered in a event.");
+        }
 
         SmsData data = new SmsData(user.getPhone(), message, user.getPasswordNumber());
 
@@ -92,7 +96,7 @@ public class SchedulerServiceImpl implements ScheduleService {
         Long unityMultiplier;
         switch (unity){
             case "HOUR":
-                unityMultiplier =1000L*60*60;
+                unityMultiplier = 1000L*60*60;
                 break;
             case "MINUTE":
                 unityMultiplier = 1000L*60;

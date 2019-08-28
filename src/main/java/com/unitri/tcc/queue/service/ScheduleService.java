@@ -5,5 +5,5 @@ import com.unitri.tcc.queue.data.model.User;
 import javassist.NotFoundException;
 
 public interface ScheduleService {
-    void schedule(User user, String message) throws NotFoundException;
+    void schedule(User user, String message) throws NotFoundException, Exception;
 }
